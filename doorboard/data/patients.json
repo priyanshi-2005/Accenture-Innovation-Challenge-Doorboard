@@ -1,0 +1,1064 @@
+{
+ "meta": {
+  "hospital": "Kaveri General Hospital, Bengaluru",
+  "jurisdiction": "India DPDP Act 2023 + institutional clinical governance (demo assumption)",
+  "visits_per_day_assumed": 420,
+  "prior_record_mix": "15 with prior / 15 first-time (exactly 50/50)",
+  "retention_days_demo": 30,
+  "purpose": "Triage assist only — not diagnosis, treatment, or EHR write",
+  "esi_framework": "ESI 1–5 reference bands; DoorBoard ranks within ties and against open space",
+  "design_notes": [
+   "Half the room shares ESI 3 — DoorBoard's core story (ties ESI cannot break)",
+   "Matched fever 38.5°C: pediatric P08 (3y) vs adult P07 (36y) vs geriatric P09 (75y)",
+   "Geriatric fever 38.0°C (P09) — elderly often under-mount fever",
+   "Under-reporter P20 — words mild, look/vitals bad",
+   "Quiet watcher P02 — looks well at baseline; demo worsens vitals",
+   "Missing SpO2 P05 — refuse can-wait",
+   "Zero vitals P15 — low confidence + escalate",
+   "Wait exceeded at baseline: P16 (ESI3>30m), P13 (ESI4 near ceiling)",
+   "Transfer P14 — partial outside notes, imperfect intake",
+   "Consent withheld P17 — DPDP demo (still first-minute facts only)",
+   "Language barrier P10 — incomplete HPI, lower confidence, escalate",
+   "Bounceback <72h P05 — same complaint return, do not park as new mild",
+   "Isolation P07 — fever+cough, cohort space not normal bay",
+   "Pregnancy P14 — abdominal pain transfer, pathway caution",
+   "Intoxication P03 — unreliable historian after fall",
+   "Stroke pathway P11 — clock running since EMS alert",
+   "STEMI pathway P01 — critical + door-to-ECG clock",
+   "LWBS risk on long-wait mild ESI 4–5",
+   "Boarders reduce usable bays; staffing shock button drops nurses",
+   "Expanded to 30 patients (above 15–20 minimum) for richer surge and tie-breaking demos",
+   "Extra ped/geri, ambiguous, sepsis pathway, anaphylaxis-risk, LWBS ESI5"
+  ],
+  "notes": "Synthetic patients only. Not a medical record.",
+  "patient_count": 30,
+  "reference_labels": "reference_priority is a team consensus target tier over synthetic patients, used so the under-triage claim can be measured. Not clinical ground truth, not signed off by a clinician.",
+  "age_bands": "infant <1, toddler 1-2, preschool 3-5, school 6-12, adolescent 13-17, adult 18-64, geriatric 65+ (APLS/PALS strata)",
+  "vital_scales": "NEWS2 (RCP 2017) for 18+, PEWS/APLS bands for under 18"
+ },
+ "patients": [
+  {
+   "id": "P01",
+   "name": "Hegde, R",
+   "age": 54,
+   "complaint": "Unresponsive after collapse",
+   "look": "Unresponsive, cyanotic",
+   "arrival": "EMS",
+   "esi": 1,
+   "vitals": {
+    "hr": 40,
+    "spo2": 82,
+    "sbp": 70,
+    "temp_c": 36.2,
+    "rr": 6
+   },
+   "wait_min": 0,
+   "chair": "R0",
+   "has_prior_record": true,
+   "history_note": "Prior MI",
+   "consent_doorboard": true,
+   "tags": [
+    "critical",
+    "returner"
+   ],
+   "pathway": "stemi",
+   "pathway_min": 8,
+   "scenario": "ESI 1 critical + STEMI pathway clock",
+   "reference_priority": 1,
+   "reference_why": "witnessed arrest physiology, immediate resus"
+  },
+  {
+   "id": "P02",
+   "name": "Joseph, M",
+   "age": 47,
+   "complaint": "Tired",
+   "look": "Quiet, still",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 88,
+    "spo2": 97,
+    "sbp": 122,
+    "temp_c": 36.6,
+    "rr": 16
+   },
+   "wait_min": 18,
+   "chair": "C12",
+   "has_prior_record": true,
+   "history_note": "HTN",
+   "consent_doorboard": true,
+   "tags": [
+    "returner",
+    "quiet_watch"
+   ],
+   "scenario": "Quiet patient — looks well now; demo button worsens HR (surge worst case)",
+   "reference_priority": 3,
+   "reference_why": "well at baseline, returner, serial vitals are the reason to watch",
+   "vitals_series": [
+    {
+     "t_minus_min": 30,
+     "vitals": {
+      "hr": 84,
+      "spo2": 98,
+      "sbp": 126,
+      "temp_c": 36.6,
+      "rr": 15
+     }
+    },
+    {
+     "t_minus_min": 15,
+     "vitals": {
+      "hr": 88,
+      "spo2": 97,
+      "sbp": 124,
+      "temp_c": 36.6,
+      "rr": 16
+     }
+    }
+   ]
+  },
+  {
+   "id": "P03",
+   "name": "Khan, S",
+   "age": 34,
+   "complaint": "Fall — drinking, unclear what happened",
+   "look": "Walking, talking, smells of alcohol",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 78,
+    "spo2": 98,
+    "sbp": 118,
+    "temp_c": 36.7,
+    "rr": 14
+   },
+   "wait_min": 22,
+   "chair": "C2",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "intoxicated": true,
+   "tags": [
+    "zero_history",
+    "esi3_tie",
+    "intoxicated"
+   ],
+   "scenario": "Intoxicated fall — unreliable historian, lower confidence",
+   "reference_priority": 3,
+   "reference_why": "mechanism unclear, intoxicated, needs assessment not resus"
+  },
+  {
+   "id": "P04",
+   "name": "Iyer, A",
+   "age": 29,
+   "complaint": "Stomach pain",
+   "look": "Talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 92,
+    "spo2": 98,
+    "sbp": 126,
+    "temp_c": 37.1,
+    "rr": null
+   },
+   "wait_min": 15,
+   "chair": "C4",
+   "has_prior_record": true,
+   "history_note": "Prior gastritis",
+   "consent_doorboard": true,
+   "tags": [
+    "returner",
+    "esi3_tie",
+    "partial_vitals"
+   ],
+   "scenario": "Partial vitals (no RR) + prior history — medium completeness",
+   "reference_priority": 3,
+   "reference_why": "stable abdominal pain, workup"
+  },
+  {
+   "id": "P05",
+   "name": "Shah, K",
+   "age": 41,
+   "complaint": "Headache",
+   "look": "Talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 80,
+    "spo2": null,
+    "sbp": 130,
+    "temp_c": 36.9,
+    "rr": 15
+   },
+   "wait_min": 12,
+   "chair": "C9",
+   "has_prior_record": true,
+   "history_note": "Migraine history",
+   "consent_doorboard": true,
+   "bounceback_72h": true,
+   "tags": [
+    "missing_spo2",
+    "esi3_tie",
+    "bounceback_72h"
+   ],
+   "scenario": "Missing SpO2 + bounceback <72h for headache — refuse can-wait + override demo",
+   "reference_priority": 3,
+   "reference_why": "bounceback headache, needs reassessment not immediate"
+  },
+  {
+   "id": "P06",
+   "name": "Nair, P",
+   "age": 22,
+   "complaint": "Cut finger",
+   "look": "Walking",
+   "arrival": "Walk-in",
+   "esi": 4,
+   "vitals": {
+    "hr": 72,
+    "spo2": 99,
+    "sbp": 118,
+    "temp_c": 36.5,
+    "rr": 14
+   },
+   "wait_min": 40,
+   "chair": "C5",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history"
+   ],
+   "scenario": "Mild ESI 4 — asked to wait in surge on purpose",
+   "reference_priority": 4,
+   "reference_why": "minor wound"
+  },
+  {
+   "id": "P07",
+   "name": "Bose, L",
+   "age": 36,
+   "complaint": "Fever and cough — possible TB exposure",
+   "look": "Comfortable, talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 88,
+    "spo2": 97,
+    "sbp": 120,
+    "temp_c": 38.5,
+    "rr": 16
+   },
+   "wait_min": 25,
+   "chair": "C7",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "isolation_needed": true,
+   "tags": [
+    "zero_history",
+    "fever_twin_adult",
+    "esi3_tie",
+    "isolation"
+   ],
+   "scenario": "Adult fever 38.5°C + isolation cohort — not a normal bay",
+   "reference_priority": 3,
+   "reference_why": "stable adult fever, isolation for cohorting only"
+  },
+  {
+   "id": "P08",
+   "name": "Reddy, Anika",
+   "age": 3,
+   "complaint": "Fever",
+   "look": "Lethargic, not playing",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 148,
+    "spo2": 96,
+    "sbp": 88,
+    "temp_c": 38.5,
+    "rr": 32
+   },
+   "wait_min": 20,
+   "chair": "Peds1",
+   "has_prior_record": true,
+   "history_note": "Prior URI",
+   "consent_doorboard": true,
+   "tags": [
+    "pediatric",
+    "fever_twin_peds"
+   ],
+   "scenario": "Same 38.5°C as P07 — higher urgency in a 3-year-old (brief example)",
+   "reference_priority": 2,
+   "reference_why": "lethargic toddler, tachycardic and tachypnoeic for age"
+  },
+  {
+   "id": "P09",
+   "name": "Gupta, S",
+   "age": 75,
+   "complaint": "Fever, weak",
+   "look": "Quiet, pale",
+   "arrival": "EMS",
+   "esi": 3,
+   "vitals": {
+    "hr": 102,
+    "spo2": 93,
+    "sbp": 98,
+    "temp_c": 38.5,
+    "rr": 22
+   },
+   "wait_min": 14,
+   "chair": "G1",
+   "has_prior_record": true,
+   "history_note": "Diabetes, CKD",
+   "consent_doorboard": true,
+   "tags": [
+    "geriatric",
+    "fever_twin_geri"
+   ],
+   "scenario": "75yo fever 38.5°C — same temp as 3yo (P08) and adult (P07); brief age example",
+   "reference_priority": 2,
+   "reference_why": "elderly fever with SpO2 93 and SBP 98, sepsis risk",
+   "vitals_series": [
+    {
+     "t_minus_min": 25,
+     "vitals": {
+      "hr": 94,
+      "spo2": 96,
+      "sbp": 110,
+      "temp_c": 38.2,
+      "rr": 18
+     }
+    }
+   ]
+  },
+  {
+   "id": "P10",
+   "name": "Das, V",
+   "age": 55,
+   "complaint": "Not sure — dizzy or chest tightness (family translating)",
+   "look": "Anxious, talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 96,
+    "spo2": 96,
+    "sbp": 142,
+    "temp_c": 36.7,
+    "rr": 18
+   },
+   "wait_min": 10,
+   "chair": "C11",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "language_barrier": true,
+   "tags": [
+    "ambiguous",
+    "zero_history",
+    "esi3_tie",
+    "language_barrier"
+   ],
+   "scenario": "Ambiguous + language barrier — thin HPI, escalate under uncertainty",
+   "reference_priority": 2,
+   "reference_why": "cannot exclude ACS on an ambiguous chest description"
+  },
+  {
+   "id": "P11",
+   "name": "Fernandez, J",
+   "age": 67,
+   "complaint": "Weakness one side",
+   "look": "Confused",
+   "arrival": "EMS",
+   "esi": 2,
+   "vitals": {
+    "hr": 88,
+    "spo2": 95,
+    "sbp": 168,
+    "temp_c": 36.6,
+    "rr": 18
+   },
+   "wait_min": 3,
+   "chair": "R2",
+   "has_prior_record": true,
+   "history_note": "Prior TIA",
+   "consent_doorboard": true,
+   "pathway": "stroke",
+   "pathway_min": 18,
+   "tags": [
+    "geriatric",
+    "stroke_alert",
+    "returner"
+   ],
+   "scenario": "Geriatric ESI 2 stroke pathway — clock 18m since EMS alert",
+   "reference_priority": 2,
+   "reference_why": "stroke pathway, clock running"
+  },
+  {
+   "id": "P12",
+   "name": "Patel, Riya",
+   "age": 8,
+   "complaint": "Asthma — shortness of breath",
+   "look": "Working to breathe, retractions",
+   "arrival": "Walk-in",
+   "esi": 2,
+   "vitals": {
+    "hr": 132,
+    "spo2": 91,
+    "sbp": 100,
+    "temp_c": 37.0,
+    "rr": 36
+   },
+   "wait_min": 6,
+   "chair": "Peds2",
+   "has_prior_record": true,
+   "history_note": "Known asthma",
+   "consent_doorboard": true,
+   "tags": [
+    "pediatric",
+    "returner"
+   ],
+   "scenario": "Pediatric ESI 2 respiratory — age-aware HR/RR/SpO2",
+   "reference_priority": 2,
+   "reference_why": "child in respiratory distress, SpO2 91"
+  },
+  {
+   "id": "P13",
+   "name": "Ali, H",
+   "age": 19,
+   "complaint": "Sprain ankle",
+   "look": "Walking with limp",
+   "arrival": "Walk-in",
+   "esi": 4,
+   "vitals": {
+    "hr": 70,
+    "spo2": 99,
+    "sbp": 116,
+    "temp_c": 36.4,
+    "rr": 14
+   },
+   "wait_min": 55,
+   "chair": "C14",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history"
+   ],
+   "scenario": "ESI 4 long wait — near safe ceiling; mild, can wait in surge",
+   "reference_priority": 4,
+   "reference_why": "isolated limb injury",
+   "vitals_series": [
+    {
+     "t_minus_min": 40,
+     "vitals": {
+      "hr": 70,
+      "spo2": 99,
+      "sbp": 116,
+      "temp_c": 36.4,
+      "rr": 14
+     }
+    }
+   ]
+  },
+  {
+   "id": "P14",
+   "name": "Menon, Priya",
+   "age": 28,
+   "complaint": "Abdominal pain — 22 weeks pregnant, outside clinic notes unclear",
+   "look": "Still, pale",
+   "arrival": "Transfer",
+   "esi": 3,
+   "vitals": {
+    "hr": 118,
+    "spo2": 97,
+    "sbp": 102,
+    "temp_c": 37.8,
+    "rr": 20
+   },
+   "wait_min": 28,
+   "chair": "C8",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "pregnant": true,
+   "tags": [
+    "zero_history",
+    "transfer",
+    "ambiguous",
+    "esi3_tie",
+    "pregnant"
+   ],
+   "scenario": "Pregnant transfer + ambiguous notes — imperfect intake + pregnancy caution",
+   "reference_priority": 2,
+   "reference_why": "pregnant, tachycardic, pale, abdominal pain"
+  },
+  {
+   "id": "P15",
+   "name": "Chopra, N",
+   "age": 31,
+   "complaint": "Headache after fall — not sure how hard",
+   "look": "Talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": null,
+    "spo2": null,
+    "sbp": null,
+    "temp_c": null,
+    "rr": null
+   },
+   "wait_min": 8,
+   "chair": "C15",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history",
+    "ambiguous",
+    "missing_vitals",
+    "esi3_tie"
+   ],
+   "scenario": "Zero vitals + zero history — low confidence, escalate, refuse can-wait",
+   "reference_priority": 3,
+   "reference_why": "no vitals taken, must be measured before any can-wait call"
+  },
+  {
+   "id": "P16",
+   "name": "Rao, B",
+   "age": 72,
+   "complaint": "Fall, hip pain",
+   "look": "Quiet",
+   "arrival": "EMS",
+   "esi": 3,
+   "vitals": {
+    "hr": 94,
+    "spo2": 94,
+    "sbp": 110,
+    "temp_c": 36.5,
+    "rr": 18
+   },
+   "wait_min": 35,
+   "chair": "G2",
+   "has_prior_record": true,
+   "history_note": "Osteoporosis",
+   "consent_doorboard": true,
+   "tags": [
+    "geriatric",
+    "returner"
+   ],
+   "scenario": "Wait 35m > ESI3 safe 30m — queue re-assess at baseline",
+   "reference_priority": 3,
+   "reference_why": "elderly fall, stable but needs imaging and is over safe wait",
+   "vitals_series": [
+    {
+     "t_minus_min": 30,
+     "vitals": {
+      "hr": 88,
+      "spo2": 96,
+      "sbp": 118,
+      "temp_c": 36.5,
+      "rr": 16
+     }
+    }
+   ]
+  },
+  {
+   "id": "P17",
+   "name": "Singh, T",
+   "age": 26,
+   "complaint": "Rash, itchy",
+   "look": "Comfortable, talking",
+   "arrival": "Walk-in",
+   "esi": 5,
+   "vitals": {
+    "hr": 74,
+    "spo2": 99,
+    "sbp": 120,
+    "temp_c": 36.8,
+    "rr": 14
+   },
+   "wait_min": 70,
+   "chair": "C18",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": false,
+   "tags": [
+    "zero_history",
+    "consent_withheld"
+   ],
+   "scenario": "ESI 5 mild + DPDP consent withheld — still first-minute board only, no secondary use",
+   "reference_priority": 5,
+   "reference_why": "minor dermatological"
+  },
+  {
+   "id": "P18",
+   "name": "Thomas, E",
+   "age": 52,
+   "complaint": "Shortness of breath",
+   "look": "Working to breathe",
+   "arrival": "Walk-in",
+   "esi": 2,
+   "vitals": {
+    "hr": 112,
+    "spo2": 89,
+    "sbp": 138,
+    "temp_c": 37.2,
+    "rr": 26
+   },
+   "wait_min": 7,
+   "chair": "C3",
+   "has_prior_record": true,
+   "history_note": "COPD",
+   "consent_doorboard": true,
+   "tags": [
+    "returner"
+   ],
+   "scenario": "ESI 2 hypoxic + COPD history weight",
+   "reference_priority": 2,
+   "reference_why": "hypoxic at 89 on room air"
+  },
+  {
+   "id": "P19",
+   "name": "Krishna, Baby",
+   "age": 1,
+   "complaint": "Fever, poor feeding",
+   "look": "Lethargic, grunting",
+   "arrival": "Walk-in",
+   "esi": 2,
+   "vitals": {
+    "hr": 170,
+    "spo2": 94,
+    "sbp": 78,
+    "temp_c": 39.2,
+    "rr": 44
+   },
+   "wait_min": 9,
+   "chair": "Peds3",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "pediatric",
+    "zero_history"
+   ],
+   "scenario": "Infant ESI 2 + zero history — worst-case first-time pediatric",
+   "reference_priority": 1,
+   "reference_why": "infant, HR 170 RR 44 SBP 78, lethargic and grunting"
+  },
+  {
+   "id": "P20",
+   "name": "Okeke, A",
+   "age": 61,
+   "complaint": "I'm fine — just a little tired",
+   "look": "Pale, clammy, still",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 112,
+    "spo2": 94,
+    "sbp": 98,
+    "temp_c": 36.4,
+    "rr": 20
+   },
+   "wait_min": 11,
+   "chair": "C17",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "under_report",
+    "zero_history",
+    "esi3_tie"
+   ],
+   "scenario": "Under-reports symptoms — trust look/vitals over words; still below ESI 1–2",
+   "reference_priority": 2,
+   "reference_why": "pale clammy tachycardic while saying she is fine",
+   "vitals_series": [
+    {
+     "t_minus_min": 20,
+     "vitals": {
+      "hr": 98,
+      "spo2": 96,
+      "sbp": 112,
+      "temp_c": 36.5,
+      "rr": 17
+     }
+    }
+   ]
+  },
+  {
+   "id": "P21",
+   "name": "Chen, Wei",
+   "age": 5,
+   "complaint": "Vomiting, not keeping fluids",
+   "look": "Lethargic, dry lips",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 140,
+    "spo2": 97,
+    "sbp": 90,
+    "temp_c": 37.9,
+    "rr": 28
+   },
+   "wait_min": 16,
+   "chair": "Peds4",
+   "has_prior_record": true,
+   "history_note": "Prior gastroenteritis",
+   "consent_doorboard": true,
+   "tags": [
+    "pediatric",
+    "returner"
+   ],
+   "scenario": "Extra pediatric dehydration concern — zero history",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 3,
+   "reference_why": "dehydrated child, oral challenge, stable perfusion"
+  },
+  {
+   "id": "P22",
+   "name": "Iyer, Lakshmi",
+   "age": 81,
+   "complaint": "I'm fine — family says she is confused today",
+   "look": "Confused, quiet",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 96,
+    "spo2": 94,
+    "sbp": 108,
+    "temp_c": 37.2,
+    "rr": 20
+   },
+   "wait_min": 19,
+   "chair": "G3",
+   "has_prior_record": true,
+   "history_note": "Dementia, heart failure",
+   "consent_doorboard": true,
+   "tags": [
+    "geriatric",
+    "under_report",
+    "ambiguous"
+   ],
+   "scenario": "Geriatric under-report / family concern mismatch",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 2,
+   "reference_why": "new confusion in an 81 year old is a red flag",
+   "vitals_series": [
+    {
+     "t_minus_min": 25,
+     "vitals": {
+      "hr": 88,
+      "spo2": 96,
+      "sbp": 120,
+      "temp_c": 37.0,
+      "rr": 17
+     }
+    }
+   ]
+  },
+  {
+   "id": "P23",
+   "name": "Rodriguez, M",
+   "age": 45,
+   "complaint": "Maybe anxiety or heart — pressure in chest, not sure",
+   "look": "Anxious, sweaty",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 108,
+    "spo2": 96,
+    "sbp": 152,
+    "temp_c": 36.8,
+    "rr": 22
+   },
+   "wait_min": 9,
+   "chair": "C19",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "ambiguous",
+    "zero_history",
+    "esi3_tie"
+   ],
+   "scenario": "Extra ambiguous cardiac vs anxiety",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 2,
+   "reference_why": "cardiac cannot be excluded from anxiety at triage"
+  },
+  {
+   "id": "P24",
+   "name": "Kapoor, S",
+   "age": 33,
+   "complaint": "Seizure at home — back to baseline",
+   "look": "Sleepy, talking",
+   "arrival": "EMS",
+   "esi": 2,
+   "vitals": {
+    "hr": 98,
+    "spo2": 97,
+    "sbp": 128,
+    "temp_c": 36.9,
+    "rr": 16
+   },
+   "wait_min": 5,
+   "chair": "R3",
+   "has_prior_record": true,
+   "history_note": "Known epilepsy",
+   "consent_doorboard": true,
+   "tags": [
+    "returner"
+   ],
+   "scenario": "Post-ictal ESI 2 with known epilepsy history",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 2,
+   "reference_why": "post-ictal, back to baseline but needs monitored space"
+  },
+  {
+   "id": "P25",
+   "name": "Okonkwo, B",
+   "age": 50,
+   "complaint": "High sugar — shaky, confused",
+   "look": "Confused, sweaty",
+   "arrival": "Walk-in",
+   "esi": 2,
+   "vitals": {
+    "hr": 110,
+    "spo2": 96,
+    "sbp": 118,
+    "temp_c": 36.5,
+    "rr": 18
+   },
+   "wait_min": 4,
+   "chair": "C20",
+   "has_prior_record": true,
+   "history_note": "Diabetes on insulin",
+   "consent_doorboard": true,
+   "tags": [
+    "returner"
+   ],
+   "scenario": "Hypoglycemia-risk returner with rich history",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 2,
+   "reference_why": "symptomatic glycaemic event with confusion"
+  },
+  {
+   "id": "P26",
+   "name": "Nguyen, T",
+   "age": 27,
+   "complaint": "Allergic reaction — lips swelling after food",
+   "look": "Anxious, face puffy",
+   "arrival": "Walk-in",
+   "esi": 2,
+   "vitals": {
+    "hr": 115,
+    "spo2": 95,
+    "sbp": 100,
+    "temp_c": 36.7,
+    "rr": 22
+   },
+   "wait_min": 3,
+   "chair": "C21",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history"
+   ],
+   "scenario": "Anaphylaxis-risk first-timer",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 2,
+   "reference_why": "progressing allergic reaction, airway risk"
+  },
+  {
+   "id": "P27",
+   "name": "Sharma, D",
+   "age": 16,
+   "complaint": "Syncope while standing in heat",
+   "look": "Pale, talking",
+   "arrival": "Walk-in",
+   "esi": 3,
+   "vitals": {
+    "hr": 64,
+    "spo2": 98,
+    "sbp": 100,
+    "temp_c": 37.0,
+    "rr": 16
+   },
+   "wait_min": 14,
+   "chair": "Peds5",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "pediatric",
+    "zero_history",
+    "esi3_tie"
+   ],
+   "scenario": "Adolescent syncope — pediatric band",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 3,
+   "reference_why": "vasovagal syncope in heat, normal adolescent vitals"
+  },
+  {
+   "id": "P28",
+   "name": "Banerjee, A",
+   "age": 69,
+   "complaint": "Fever, cough — nursing home transfer",
+   "look": "Quiet, working to breathe",
+   "arrival": "Transfer",
+   "esi": 2,
+   "vitals": {
+    "hr": 108,
+    "spo2": 90,
+    "sbp": 102,
+    "temp_c": 38.6,
+    "rr": 26
+   },
+   "wait_min": 8,
+   "chair": "G4",
+   "has_prior_record": true,
+   "history_note": "COPD, nursing home resident",
+   "consent_doorboard": true,
+   "isolation_needed": true,
+   "pathway": "sepsis",
+   "pathway_min": 25,
+   "tags": [
+    "geriatric",
+    "isolation",
+    "returner"
+   ],
+   "scenario": "Geriatric sepsis pathway + isolation + transfer",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "reference_priority": 2,
+   "reference_why": "nursing home transfer, febrile, SpO2 90, RR 26",
+   "vitals_series": [
+    {
+     "t_minus_min": 20,
+     "vitals": {
+      "hr": 98,
+      "spo2": 93,
+      "sbp": 112,
+      "temp_c": 38.2,
+      "rr": 22
+     }
+    }
+   ]
+  },
+  {
+   "id": "P29",
+   "name": "Costa, L",
+   "age": 38,
+   "complaint": "Burn on hand from cooking oil",
+   "look": "Walking, talking",
+   "arrival": "Walk-in",
+   "esi": 4,
+   "vitals": {
+    "hr": 76,
+    "spo2": 99,
+    "sbp": 122,
+    "temp_c": 36.6,
+    "rr": 14
+   },
+   "wait_min": 48,
+   "chair": "C22",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history"
+   ],
+   "scenario": "ESI 4 burn — LWBS risk if wait grows",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 4,
+   "reference_why": "partial thickness burn, dressing and analgesia"
+  },
+  {
+   "id": "P30",
+   "name": "Qureshi, F",
+   "age": 24,
+   "complaint": "Sore throat, wants antibiotics",
+   "look": "Comfortable, talking",
+   "arrival": "Walk-in",
+   "esi": 5,
+   "vitals": {
+    "hr": 72,
+    "spo2": 99,
+    "sbp": 118,
+    "temp_c": 37.3,
+    "rr": 14
+   },
+   "wait_min": 85,
+   "chair": "C23",
+   "has_prior_record": false,
+   "history_note": "",
+   "consent_doorboard": true,
+   "tags": [
+    "zero_history"
+   ],
+   "scenario": "ESI 5 primary-care type — LWBS risk, asked to wait in surge",
+   "language_barrier": false,
+   "bounceback_72h": false,
+   "isolation_needed": false,
+   "pregnant": false,
+   "intoxicated": false,
+   "pathway": "",
+   "pathway_min": 0,
+   "reference_priority": 5,
+   "reference_why": "primary care complaint"
+  }
+ ]
+}
